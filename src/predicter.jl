@@ -57,7 +57,7 @@ end
 function predict(model,
     (state, point, carry, action, reward)::Tuple{Array{T,4},Array{T,2},Tuple{Array{T,2},Array{T,2}},Array{T,2},Array{T,2}}
 ) where {T}
-    data = (state, point, carry, action, reward)
-    response, _ = model.model(data, model.ps, model.st)
+    data = (state, point, carry, action, reward) |> gpu
+    response, _ = model.model(data, model.ps, model.st) .|> cpu
     response
 end

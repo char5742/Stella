@@ -3,6 +3,7 @@ using JLD2
 using JuliaFtg
 using Random
 using Lux
+using NNlib
 using MLUtils
 using Zygote
 using StatsBase

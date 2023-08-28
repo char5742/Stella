@@ -1,7 +1,7 @@
 function loadmodel(path::String)::Model
     data = load(path)
-    ps = data["ps"]
-    st = data["st"]
+    ps = data["ps"] |> gpu
+    st = data["st"] |> gpu
     model = QNetwork(32, 41)
     Model(model, ps, st)
 end
@@ -12,8 +12,9 @@ function create_carry()
 end
 
 function warmup(model, ps, st)
+    carry_size = 512
     model(
-        (zeros(Float32, 96, 64, 1, 1), zeros(Float32, 5, 1), create_carry(), zeros(Float32, 41, 1), zeros(Float32, 1, 1)), ps, st)
+        (zeros(Float32, 96, 64, 1, 1), zeros(Float32, 5, 1), (zeros(Float32, carry_size, 1), zeros(Float32, carry_size, 1)), zeros(Float32, 41, 1), zeros(Float32, 1, 1)) |> gpu, ps, st)
 end
 
 
